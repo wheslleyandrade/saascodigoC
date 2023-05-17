@@ -19,7 +19,7 @@ import {
   WAMessageStubType,
   WAMessageUpdate,
   WASocket,
-} from "@whiskeysockets/baileys";
+} from "@adiwajshing/baileys";
 import Contact from "../../models/Contact";
 import Ticket from "../../models/Ticket";
 import Message from "../../models/Message";

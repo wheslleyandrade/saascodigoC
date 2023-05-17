@@ -2,7 +2,7 @@ import {
   AnyWASocket,
   BinaryNode,
   Contact as BContact,
-} from "@whiskeysockets/baileys";
+} from "@adiwajshing/baileys";
 import * as Sentry from "@sentry/node";
 
 import { Op } from "sequelize";
