@@ -86,7 +86,7 @@ const SignUp = () => {
 	const initialState = { name: "", email: "", password: "", planId: "", };
 
 	const [user] = useState(initialState);
-	const dueDate = moment().add(7, "day").format();
+	const dueDate = moment().add(3, "day").format();
 	const handleSignUp = async values => {
 		Object.assign(values, { recurrence: "MENSAL" });
 		Object.assign(values, { dueDate: dueDate });
