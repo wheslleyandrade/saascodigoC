@@ -2,7 +2,7 @@ import {
   BufferJSON,
   LegacyAuthenticationCreds,
   newLegacyAuthCreds
-} from "@adiwajshing/baileys";
+} from "@whiskeysockets/baileys";
 import Whatsapp from "../models/Whatsapp";
 
 export const authStateLegacy = async (whatsapp: Whatsapp) => {

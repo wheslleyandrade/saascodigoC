@@ -1,4 +1,4 @@
-import { AnyWASocket } from "@adiwajshing/baileys";
+import { AnyWASocket } from "@whiskeysockets/baileys";
 import { getWbot } from "../libs/wbot";
 import GetDefaultWhatsApp from "./GetDefaultWhatsApp";
 import Ticket from "../models/Ticket";
