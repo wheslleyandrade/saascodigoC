@@ -52,10 +52,10 @@ function AnnouncementDialog({ announcement, open, handleClose }) {
         {announcement.mediaPath && (
           <div
             style={{
-              /*border: "1px solid #f1f1f1",*/
+              border: "1px solid #f1f1f1",
               margin: "0 auto 20px",
               textAlign: "center",
-              width: 550,
+              width: "90%",
               height: 300,
               backgroundImage: `url(${getMediaPath(announcement.mediaPath)})`,
               backgroundRepeat: "no-repeat",
