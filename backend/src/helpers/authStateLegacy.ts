@@ -1,7 +1,6 @@
 import {
   BufferJSON,
-  LegacyAuthenticationCreds,
-  newLegacyAuthCreds
+  AuthenticationCreds
 } from "@whiskeysockets/baileys";
 import Whatsapp from "../models/Whatsapp";
 
@@ -11,18 +10,9 @@ export const authStateLegacy = async (whatsapp: Whatsapp) => {
       id: whatsapp.id
     }
   });
-  let state: LegacyAuthenticationCreds;
+  let state: AuthenticationCreds;
   if (updateWhatsappData?.session) {
     state = JSON.parse(updateWhatsappData?.session, BufferJSON.reviver);
-    if (typeof state.encKey === "string") {
-      state.encKey = Buffer.from(state.encKey, "base64");
-    }
-
-    if (typeof state.macKey === "string") {
-      state.macKey = Buffer.from(state.macKey, "base64");
-    }
-  } else {
-    state = newLegacyAuthCreds();
   }
 
   return {

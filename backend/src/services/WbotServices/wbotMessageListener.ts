@@ -5,7 +5,6 @@ import * as Sentry from "@sentry/node";
 import { isNil, isNull, head } from "lodash";
 
 import {
-  AnyWASocket,
   downloadContentFromMessage,
   extractMessageContent,
   getContentType,
@@ -13,7 +12,6 @@ import {
   MediaType,
   MessageUpsertType,
   proto,
-  WALegacySocket,
   WAMessage,
   BinaryNode,
   WAMessageStubType,
@@ -53,7 +51,7 @@ import { debounce } from "../../helpers/Debounce";
 
 const fs = require('fs')
 
-type Session = AnyWASocket & {
+type Session = WASocket & {
   id?: number;
   store?: Store;
 };
@@ -388,10 +386,10 @@ export const getQuotedMessageId = (msg: proto.IWebMessageInfo) => {
 
 const getMeSocket = (wbot: Session): IMe => {
 
-  return wbot.type === "legacy"
+  return wbot.type === "md"
     ? {
-      id: jidNormalizedUser((wbot as WALegacySocket).state.legacy.user.id),
-      name: (wbot as WALegacySocket).state.legacy.user.name
+      id: jidNormalizedUser((wbot as WASocket).user.id),
+      name: (wbot as WASocket).user.name
     }
     : {
       id: jidNormalizedUser((wbot as WASocket).user.id),
@@ -412,7 +410,7 @@ const getSenderMessage = (
 };
 
 const getContactMessage = async (msg: proto.IWebMessageInfo, wbot: Session) => {
-  if (wbot.type === "legacy") {
+  if (wbot.type === "md") {
     return wbot.store.contacts[msg.key.participant || msg.key.remoteJid] as IMe;
   }
 
@@ -1366,7 +1364,7 @@ const handleMessage = async (
     if (msgIsGroupBlock?.value === "enabled" && isGroup) return;
 
     if (isGroup) {
-      const grupoMeta = await wbot.groupMetadata(msg.key.remoteJid, false);
+      const grupoMeta = await wbot.groupMetadata(msg.key.remoteJid);
       const msgGroupContact = {
         id: grupoMeta.id,
         name: grupoMeta.subject
@@ -1856,10 +1854,6 @@ const wbotMessageListener = async (wbot: Session, companyId: number): Promise<vo
 
         handleMsgAck(message, message.update.status);
       });
-    });
-
-    wbot.ev.on("messages.set", async (messageSet: IMessage) => {
-      messageSet.messages.filter(filterMessages).map(msg => msg);
     });
   } catch (error) {
     Sentry.captureException(error);
