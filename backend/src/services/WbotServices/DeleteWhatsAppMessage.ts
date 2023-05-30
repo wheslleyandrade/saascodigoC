@@ -1,4 +1,4 @@
-import { proto, WALegacySocket, WASocket } from "@whiskeysockets/baileys";
+import { proto, WASocket } from "@whiskeysockets/baileys";
 import AppError from "../../errors/AppError";
 import GetTicketWbot from "../../helpers/GetTicketWbot";
 import GetWbotMessage from "../../helpers/GetWbotMessage";
@@ -27,13 +27,6 @@ const DeleteWhatsAppMessage = async (messageId: string): Promise<Message> => {
   try {
     const wbot = await GetTicketWbot(ticket);
     const messageDelete = messageToDelete as proto.WebMessageInfo;
-
-    if (wbot.type === "legacy") {
-      const remoteJid = messageDelete.key.remoteJid as string;
-      await (wbot as WALegacySocket).sendMessage(remoteJid, {
-        delete: messageDelete.key
-      });
-    }
 
     if (wbot.type === "md") {
       const menssageDelete = messageToDelete as Message;

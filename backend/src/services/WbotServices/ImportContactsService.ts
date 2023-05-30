@@ -15,9 +15,6 @@ const ImportContactsService = async (companyId: number): Promise<void> => {
   let phoneContacts;
 
   try {
-    if (wbot.type === "legacy") {
-      phoneContacts = wbot.store.contacts;
-    }
     if (wbot.type === "md") {
       const contactsString = await ShowBaileysService(wbot.id);
       phoneContacts = JSON.parse(JSON.stringify(contactsString.contacts));
@@ -25,31 +22,6 @@ const ImportContactsService = async (companyId: number): Promise<void> => {
   } catch (err) {
     Sentry.captureException(err);
     logger.error(`Could not get whatsapp contacts from phone. Err: ${err}`);
-  }
-
-  if (phoneContacts && wbot.type === "legacy") {
-    await Promise.all(
-      Object.values(phoneContacts).map(async ({ id, name }) => {
-        if (id === "status@broadcast" || id.split("@")[1] === "g.us") return;
-        const number = id.replace(/\D/g, "");
-
-        const numberExists = await Contact.findOne({
-          where: { number }
-        });
-
-        if (numberExists) return;
-
-        try {
-          await CreateContactService({ number, name, companyId });
-        } catch (error) {
-          Sentry.captureException(error);
-          console.log(error);
-          logger.warn(
-            `Could not get whatsapp contacts from phone. Err: ${error}`
-          );
-        }
-      })
-    );
   }
 
   if (phoneContacts && wbot.type === "md") {

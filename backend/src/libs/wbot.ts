@@ -1,12 +1,11 @@
 import * as Sentry from "@sentry/node";
 import makeWASocket, {
-  AnyWASocket,
+  WASocket,
   AuthenticationState,
   DisconnectReason,
   fetchLatestBaileysVersion,
-  LegacyAuthenticationCreds,
-  makeInMemoryStore,
-  makeWALegacySocket
+  AuthenticationCreds,
+  makeInMemoryStore
 } from "@whiskeysockets/baileys";
 import P from "pino";
 
@@ -26,7 +25,7 @@ import { cacheLayer } from "./cache";
 const loggerBaileys = MAIN_LOGGER.child({});
 loggerBaileys.level = "error";
 
-type Session = AnyWASocket & {
+type Session = WASocket & {
   id?: number;
   store?: Store;
 };
