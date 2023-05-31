@@ -1,10 +1,10 @@
-import { WASocket } from "@whiskeysockets/baileys";
+import { AnyWASocket } from "@adiwajshing/baileys";
 import { getWbot } from "../libs/wbot";
 import GetDefaultWhatsApp from "./GetDefaultWhatsApp";
 import Ticket from "../models/Ticket";
 import { Store } from "../libs/store";
 
-type Session = WASocket & {
+type Session = AnyWASocket & {
   id?: number;
   store?: Store;
 };
