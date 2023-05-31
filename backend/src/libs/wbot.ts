@@ -1,17 +1,18 @@
 import * as Sentry from "@sentry/node";
 import makeWASocket, {
-  WASocket,
+  AnyWASocket,
   AuthenticationState,
   DisconnectReason,
   fetchLatestBaileysVersion,
-  AuthenticationCreds,
-  makeInMemoryStore
-} from "@whiskeysockets/baileys";
+  LegacyAuthenticationCreds,
+  makeInMemoryStore,
+  makeWALegacySocket
+} from "@adiwajshing/baileys";
 import P from "pino";
 
 import Whatsapp from "../models/Whatsapp";
 import { logger } from "../utils/logger";
-import MAIN_LOGGER from "@whiskeysockets/baileys/lib/Utils/logger";
+import MAIN_LOGGER from "@adiwajshing/baileys/lib/Utils/logger";
 import {useMultiFileAuthState} from "../helpers/useMultiFileAuthState";
 import authState from "../helpers/authState";
 import { Boom } from "@hapi/boom";
@@ -25,7 +26,7 @@ import { cacheLayer } from "./cache";
 const loggerBaileys = MAIN_LOGGER.child({});
 loggerBaileys.level = "error";
 
-type Session = WASocket & {
+type Session = AnyWASocket & {
   id?: number;
   store?: Store;
 };
